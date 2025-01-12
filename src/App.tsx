@@ -13,19 +13,14 @@ function App() {
   const [selectedQuestionId, setSelectedQuestionId] = useState<string | null>(null);
   const [newTestName, setNewTestName] = useState("");
   const [newTestDescription, setNewTestDescription] = useState("");
-  const [generatedQuestion, setGeneratedQuestion] = useState<string | null>(null);
-  const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
-  const [answerExplanation, setAnswerExplanation] = useState<string | null>(null);
   const [userAnswer, setUserAnswer] = useState<string>("");
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [score, setScore] = useState<number | null>(null);
 
   // Fetch the list of tests
   useEffect(() => {
     client.models.Test.observeQuery().subscribe({
       next: (data) => {
         // Sort tests by createdAt in ascending order (oldest first)
-        const sortedTests = [...data.items].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        const sortedTests = [...data.items].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         setTests(sortedTests);
       },
     });
@@ -39,7 +34,7 @@ function App() {
       ).subscribe({
         next: (data) => {
           // Sort questions by createdAt in ascending order (oldest first)
-          const sortedQuestions = [...data.items].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+          const sortedQuestions = [...data.items].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
           setQuestions(sortedQuestions);
         },
       });
@@ -97,10 +92,7 @@ function App() {
         answerexplanation: data.Explanation,
         testId: selectedTestId,
       });
-      setGeneratedQuestion(question.data.questioncontent);
-      setCorrectAnswer(question.data.correctanswer);
-      setAnswerExplanation(question.data.answerexplanation);
-      setQuestions((prev) => [...prev, question.data]);
+      setQuestions((prev) => prev.concat(question.data ? [question.data] : []));
     } catch (error) {
       console.error("Error generating question:", error);
       alert("Failed to generate a question. Please try again.");
@@ -153,7 +145,7 @@ function App() {
     const score = parseFloat(data.Score);
 
     // Update the question with score and feedback
-    const updatedQuestion = await client.models.Question.update(
+    await client.models.Question.update(
       { id: selectedQuestion.id, 
         useranswer: userAnswer,
         score: score,
@@ -161,8 +153,6 @@ function App() {
     );
 
     // Update the local state with the updated score and feedback
-    setFeedback(feedback);
-    setScore(score);
     setQuestions((prevQuestions) => 
       prevQuestions.map((question) => 
         question.id === selectedQuestion.id 
@@ -213,7 +203,10 @@ function App() {
           <h2>Questions for Selected Test</h2>
           <ul>
             {questions.map((question) => (
-              <li key={question.id} onClick={() => setSelectedQuestionId(question.id)}>
+              <li key={question.id} onClick={() => {
+                setSelectedQuestionId(question.id);
+                setUserAnswer(""); 
+              }}>
                 <strong>{question.questioncontent}</strong>
                 <p>Answer: {question.correctanswer}</p>
                 <p>Explanation: {question.answerexplanation}</p>
