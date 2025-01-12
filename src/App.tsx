@@ -33,24 +33,28 @@ function App() {
     }
   }, [selectedTestId]);
 
-  // Function to create a test
-  const createTest = async () => {
-    if (newTestName) {
-      try {
-        const result = await client.models.Test.create({
-          testname: newTestName,
-          testdescription: newTestDescription || "", // Optional description
-        });
-        setTests([...tests, result]);
-        setNewTestName("");  // Reset input fields
-        setNewTestDescription("");
-      } catch (error) {
-        console.error("Error creating test:", error);
+ // Function to create a test
+ const createTest = async () => {
+  if (newTestName) {
+    try {
+      const result = await client.models.Test.create({
+        testname: newTestName,
+        testdescription: newTestDescription || "", // Optional description
+      });
+      if (result.data) {
+        setTests([...tests, result.data]);
+      } else {
+        console.error("Error creating test: result is null");
       }
-    } else {
-      alert("Test name is required");
+      setNewTestName("");  // Reset input fields
+      setNewTestDescription("");
+    } catch (error) {
+      console.error("Error creating test:", error);
     }
-  };
+  } else {
+    alert("Test name is required");
+  }
+};
 
   // Function to create a question for a selected test
   const createQuestion = async () => {
