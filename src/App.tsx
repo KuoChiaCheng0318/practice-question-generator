@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
 
@@ -10,15 +10,24 @@ function App() {
   const [tests, setTests] = useState<Array<Schema["Test"]["type"]>>([]);
   const [questions, setQuestions] = useState<Array<Schema["Question"]["type"]>>([]);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+  const [selectedQuestionId, setSelectedQuestionId] = useState<string | null>(null);
   const [newTestName, setNewTestName] = useState("");
   const [newTestDescription, setNewTestDescription] = useState("");
-  const [newQuestionContent, setNewQuestionContent] = useState("");
-  const [newCorrectAnswer, setNewCorrectAnswer] = useState("");
+  const [generatedQuestion, setGeneratedQuestion] = useState<string | null>(null);
+  const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
+  const [answerExplanation, setAnswerExplanation] = useState<string | null>(null);
+  const [userAnswer, setUserAnswer] = useState<string>("");
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [score, setScore] = useState<number | null>(null);
 
   // Fetch the list of tests
   useEffect(() => {
     client.models.Test.observeQuery().subscribe({
-      next: (data) => setTests([...data.items]),
+      next: (data) => {
+        // Sort tests by createdAt in ascending order (oldest first)
+        const sortedTests = [...data.items].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setTests(sortedTests);
+      },
     });
   }, []);
 
@@ -26,52 +35,144 @@ function App() {
   useEffect(() => {
     if (selectedTestId) {
       client.models.Question.observeQuery(
-        { filter: { testId: { eq: selectedTestId } } } // Only fetch questions related to the selected test
+        { filter: { testId: { eq: selectedTestId } } }
       ).subscribe({
-        next: (data) => setQuestions([...data.items]),
+        next: (data) => {
+          // Sort questions by createdAt in ascending order (oldest first)
+          const sortedQuestions = [...data.items].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+          setQuestions(sortedQuestions);
+        },
       });
     }
   }, [selectedTestId]);
 
- // Function to create a test
- const createTest = async () => {
-  if (newTestName) {
-    try {
-      const result = await client.models.Test.create({
-        testname: newTestName,
-        testdescription: newTestDescription || "", // Optional description
-      });
-      if (result.data) {
-        setTests([...tests, result.data]);
-      } else {
-        console.error("Error creating test: result is null");
-      }
-      setNewTestName("");  // Reset input fields
-      setNewTestDescription("");
-    } catch (error) {
-      console.error("Error creating test:", error);
-    }
-  } else {
-    alert("Test name is required");
-  }
-};
-
-  // Function to create a question for a selected test
-  const createQuestion = async () => {
-    if (selectedTestId && newQuestionContent && newCorrectAnswer) {
+  // Function to create a test
+  const createTest = async () => {
+    if (newTestName) {
       try {
-        await client.models.Question.create({
-          questioncontent: newQuestionContent,
-          correctanswer: newCorrectAnswer,
-          testId: selectedTestId,  // Associate question with the selected test
+        const result = await client.models.Test.create({
+          testname: newTestName,
+          testdescription: newTestDescription || "",
         });
-        setNewQuestionContent("");  // Reset input field
-        setNewCorrectAnswer("");
+        if (result.data) {
+          setTests([...tests, result.data]);
+        }
+        setNewTestName("");
+        setNewTestDescription("");
       } catch (error) {
-        console.error("Error creating question:", error);
+        console.error("Error creating test:", error);
       }
     } else {
-      alert("All fields are required to create a question");
+      alert("Test name is required");
+    }
+  };
+
+  // Function to request a generated question from the API
+  const generateQuestion = async () => {
+    if (!selectedTestId) {
+      alert("Please select a test before generating a question.");
+      return;
+    }
+
+    // Retrieve the selected test's details
+    const selectedTest = tests.find((test) => test.id === selectedTestId);
+    if (!selectedTest) {
+      alert("Selected test not found.");
+      return;
+    }
+
+    try {
+      const response = await fetch("https://knw2kmeyhl.execute-api.us-east-1.amazonaws.com/dev/generate-question", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          testname: selectedTest.testname,
+          testdescription: selectedTest.testdescription || "",
+        }),
+      });
+      const data = await response.json();
+      const question = await client.models.Question.create({
+        questioncontent: data.Question,
+        correctanswer: data.Answer,
+        answerexplanation: data.Explanation,
+        testId: selectedTestId,
+      });
+      setGeneratedQuestion(question.data.questioncontent);
+      setCorrectAnswer(question.data.correctanswer);
+      setAnswerExplanation(question.data.answerexplanation);
+      setQuestions((prev) => [...prev, question.data]);
+    } catch (error) {
+      console.error("Error generating question:", error);
+      alert("Failed to generate a question. Please try again.");
+    }
+  };
+
+  // Function to submit the user's answer and get the score/feedback
+  const submitAnswer = async () => {
+    if (!selectedQuestionId || !userAnswer) {
+      alert("Please select a question and provide an answer.");
+      return;
+    }
+
+    // Retrieve the selected test's details
+    const selectedTest = tests.find((test) => test.id === selectedTestId);
+    if (!selectedTest) {
+      alert("Selected test not found.");
+      return;
+    }
+    const selectedQuestion = questions.find((question) => question.id === selectedQuestionId);
+    // Ensure that we have the selected question and test details
+    if (!selectedQuestion) {
+      alert("Selected question not found.");
+      return;
+    }
+
+    // Log values before API request
+    // console.log("Test Name: ", selectedTest.testname);
+    // console.log("Test Description: ", selectedTest.testdescription);
+    // console.log("Question Content: ", selectedQuestion.questioncontent);
+    // console.log("Real Answer: ", selectedQuestion.correctanswer);
+    // console.log("useranswer: ", userAnswer);
+
+    try {
+      const response = await fetch("https://knw2kmeyhl.execute-api.us-east-1.amazonaws.com/dev/score-answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          testname: selectedTest.testname,
+          testdescription: selectedTest.testdescription,
+          testquestion: selectedQuestion.questioncontent,
+          realanswer: selectedQuestion.correctanswer,
+          useranswer: userAnswer,
+        }),
+      });
+      const data = await response.json();
+
+    // Assuming the response contains the feedback and score
+    const feedback = data.Feedback;
+    const score = parseFloat(data.Score);
+
+    // Update the question with score and feedback
+    const updatedQuestion = await client.models.Question.update(
+      { id: selectedQuestion.id, 
+        useranswer: userAnswer,
+        score: score,
+        feedback: feedback}
+    );
+
+    // Update the local state with the updated score and feedback
+    setFeedback(feedback);
+    setScore(score);
+    setQuestions((prevQuestions) => 
+      prevQuestions.map((question) => 
+        question.id === selectedQuestion.id 
+          ? { ...question, score, feedback } 
+          : question
+      )
+    );
+    } catch (error) {
+      console.error("Error scoring answer:", error);
+      alert("Failed to submit the answer. Please try again.");
     }
   };
 
@@ -79,7 +180,7 @@ function App() {
     <main>
       <h1>{user?.signInDetails?.loginId}'s Test Management</h1>
 
-      {/* Form to create a new test */}
+      {/* Form to create a test */}
       <div>
         <h2>Create a New Test</h2>
         <input
@@ -96,8 +197,8 @@ function App() {
         <button onClick={createTest}>Create Test</button>
       </div>
 
-      {/* List of created tests */}
-      <h2>Created Tests</h2>
+      {/* Display tests */}
+      <h2>Tests</h2>
       <ul>
         {tests.map((test) => (
           <li key={test.id} onClick={() => setSelectedTestId(test.id)}>
@@ -109,33 +210,36 @@ function App() {
       {/* Display questions for the selected test */}
       {selectedTestId && (
         <div>
-          <h2>Questions for {tests.find((test) => test.id === selectedTestId)?.testname}</h2>
+          <h2>Questions for Selected Test</h2>
           <ul>
             {questions.map((question) => (
-              <li key={question.id}>
-                <strong>{question.questioncontent}</strong><br />
-                Correct Answer: {question.correctanswer}<br />
-                {/* Optionally display other fields like score, feedback, etc. */}
-                <em>{question.feedback || "No feedback"}</em>
+              <li key={question.id} onClick={() => setSelectedQuestionId(question.id)}>
+                <strong>{question.questioncontent}</strong>
+                <p>Answer: {question.correctanswer}</p>
+                <p>Explanation: {question.answerexplanation}</p>
+                <p>Your Answer: {question.useranswer}</p>
+                <p>Score: {question.score !== undefined && question.score !== null ? question.score : "Not graded yet"}</p>
+                <p>Feedback: {question.feedback || "No feedback yet"}</p>
+
+                {selectedQuestionId===question.id && (
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Your Answer"
+                      value={userAnswer}
+                      onChange={(e) => setUserAnswer(e.target.value)}
+                    />
+                    <button onClick={submitAnswer}>Submit Answer</button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
 
-          {/* Form to create a question for the selected test */}
-          <h3>Create a Question for Test</h3>
-          <input
-            type="text"
-            placeholder="Question Content"
-            value={newQuestionContent}
-            onChange={(e) => setNewQuestionContent(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Correct Answer"
-            value={newCorrectAnswer}
-            onChange={(e) => setNewCorrectAnswer(e.target.value)}
-          />
-          <button onClick={createQuestion}>Create Question</button>
+          {/* Generate a question */}
+          <button onClick={generateQuestion}>Generate Question</button>
+
+
         </div>
       )}
 
