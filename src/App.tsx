@@ -208,11 +208,15 @@ function App() {
                 setUserAnswer(""); 
               }}>
                 <strong>{question.questioncontent}</strong>
-                <p>Answer: {question.correctanswer}</p>
-                <p>Explanation: {question.answerexplanation}</p>
-                <p>Your Answer: {question.useranswer}</p>
-                <p>Score: {question.score !== undefined && question.score !== null ? question.score : "Not graded yet"}</p>
-                <p>Feedback: {question.feedback || "No feedback yet"}</p>
+                {question.useranswer && (
+                  <div>
+                    <p>Answer: {question.correctanswer}</p>
+                    <p>Explanation: {question.answerexplanation}</p>
+                    <p>Your Answer: {question.useranswer}</p>
+                    <p>Score: {question.score !== undefined && question.score !== null ? question.score : "Not graded yet"}</p>
+                    <p>Feedback: {question.feedback || "No feedback yet"}</p>
+                  </div>
+                )}
 
                 {selectedQuestionId===question.id && (
                   <div>
