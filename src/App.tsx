@@ -168,7 +168,7 @@ function App() {
 
   return (
     <main>
-      <h1>{user?.signInDetails?.loginId}'s Test Management</h1>
+      <h1>{user.username}'s Tests</h1>
 
       {/* Form to create a test */}
       <div>
