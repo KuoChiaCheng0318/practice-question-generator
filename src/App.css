@@ -40,3 +40,138 @@
 .read-the-docs {
   color: #888;
 }
+
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  color: white;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+ul {
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  border: 1px solid black;
+  gap: 1px;
+  background-color: black;
+  border-radius: 8px;
+  overflow: auto;
+}
+
+li {
+  background-color: white;
+  padding: 8px;
+}
+
+li:hover {
+  background: #dadbf9;
+  cursor: pointer;
+}
+
+a {
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.mainpage {
+  position: absolute;
+  top:0;
+  left: 0;
+  display: flex;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  min-width: 100vw;
+  padding: 5px;
+}
+
+.tests {
+  flex: 10; /* Let it take up proportional space */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  height: 100%;
+  padding: 1px;
+}
+
+.questions {
+  flex: 10; /* Adjust this proportionally */
+  height: 100%;
+  padding: 1px;
+}
+
+.questiondetails {
+  flex: 50; /* Largest section */
+  height: 100%;
+  padding: 1px;
+}
+
+.userinfo {
+  flex: 5; /* Smallest section */
+  height: 100%;
+  padding: 1px;
+}
+
+.createtest {
+  margin-top: auto;
+  padding: 5px;
+  background-color: #f1f1f1;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.testname {
+  width: calc(100% - 5px);
+  margin: 0 auto;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.testdescription {
+  width: calc(100% - 5px);
+  height: 20vh;
+  margin: 0 auto;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.testcreatebutton{
+  cursor: pointer;
+}
+
+.questiondetails2{
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  height: 100%;
+  text-align: left;
+  padding: 10px;
+}
+.useranswer{
+  margin-top: auto;
+  display: flex;
+}
+.useranswerinput{
+  margin: 5px;
+  width: 70%;
+  height: 100%;
+}
+.useranswersubmit{
+  cursor: pointer;
+  background-color: #f1f1f1;
+  color:#1a1a1a
+}

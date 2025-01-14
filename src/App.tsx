@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
+import './App.css'
 
 const client = generateClient<Schema>();
 
@@ -168,79 +169,90 @@ function App() {
 
   return (
     <main>
-      <h1>{user.username}'s Tests</h1>
-
-      {/* Form to create a test */}
-      <div>
-        <h2>Create a New Test</h2>
-        <input
-          type="text"
-          placeholder="Test Name"
-          value={newTestName}
-          onChange={(e) => setNewTestName(e.target.value)}
-        />
-        <textarea
-          placeholder="Test Description"
-          value={newTestDescription}
-          onChange={(e) => setNewTestDescription(e.target.value)}
-        />
-        <button onClick={createTest}>Create Test</button>
-      </div>
-
-      {/* Display tests */}
-      <h2>Tests</h2>
-      <ul>
-        {tests.map((test) => (
-          <li key={test.id} onClick={() => setSelectedTestId(test.id)}>
-            {test.testname} - {test.testdescription || "No description"}
-          </li>
-        ))}
-      </ul>
-
-      {/* Display questions for the selected test */}
-      {selectedTestId && (
-        <div>
-          <h2>Questions for Selected Test</h2>
-          <ul>
-            {questions.map((question) => (
-              <li key={question.id} onClick={() => {
-                setSelectedQuestionId(question.id);
-                setUserAnswer(""); 
-              }}>
-                <strong>{question.questioncontent}</strong>
-                {question.useranswer && (
-                  <div>
-                    <p>Answer: {question.correctanswer}</p>
-                    <p>Explanation: {question.answerexplanation}</p>
-                    <p>Your Answer: {question.useranswer}</p>
-                    <p>Score: {question.score !== undefined && question.score !== null ? question.score : "Not graded yet"}</p>
-                    <p>Feedback: {question.feedback || "No feedback yet"}</p>
-                  </div>
-                )}
-
-                {selectedQuestionId===question.id && (
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Your Answer"
-                      value={userAnswer}
-                      onChange={(e) => setUserAnswer(e.target.value)}
-                    />
-                    <button onClick={submitAnswer}>Submit Answer</button>
-                  </div>
-                )}
-              </li>
-            ))}
-          </ul>
-
-          {/* Generate a question */}
-          <button onClick={generateQuestion}>Generate Question</button>
-
-
+      <div className="mainpage">
+        {/* Form to create a test */}
+        <div className="tests">
+          {/* Display tests */}
+          <div className="testlist">
+            <ul>
+              {tests.map((test) => (
+                <li key={test.id} onClick={() => setSelectedTestId(test.id)}>
+                  {test.testname} - {test.testdescription || "No description"}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="createtest">
+            <input className="testname"
+              type="text"
+              placeholder="Test Name"
+              value={newTestName}
+              onChange={(e) => setNewTestName(e.target.value)}
+            />
+            <textarea className="testdescription"
+              placeholder="Test Description"
+              value={newTestDescription}
+              onChange={(e) => setNewTestDescription(e.target.value)}
+            />
+            <div className="testcreatebutton" onClick={createTest}>+ Create Test</div>
+          </div>
         </div>
-      )}
 
-      <button onClick={signOut}>Sign out</button>
+        {/* Display questions for the selected test */}
+        <div className="questions">
+          {selectedTestId && (
+            <div>
+              <ul>
+                {questions.map((question) => (
+                  <li key={question.id} onClick={() => {
+                    setSelectedQuestionId(question.id);
+                    setUserAnswer(""); 
+                  }}>
+                    <strong>{question.questioncontent}</strong>
+                  </li>
+                ))}
+              </ul>
+              {/* Generate a question */}
+              <button onClick={generateQuestion}>Generate Question</button>
+            </div>
+          )}
+        </div>
+        {/* Display selected question details */}
+        <div className="questiondetails">
+          {selectedQuestionId && (
+            <div className="questiondetails2">
+              <strong>{questions.find((q) => q.id === selectedQuestionId)?.questioncontent}</strong>
+              {questions.find((q) => q.id === selectedQuestionId)?.useranswer && (
+                <div>
+                  <p>Answer: {questions.find((q) => q.id === selectedQuestionId)?.correctanswer}</p>
+                  <p>Explanation: {questions.find((q) => q.id === selectedQuestionId)?.answerexplanation}</p>
+                  <p>Your Answer: {questions.find((q) => q.id === selectedQuestionId)?.useranswer}</p>
+                  <p>
+                    Score:{" "}
+                    {questions.find((q) => q.id === selectedQuestionId)?.score !== undefined &&
+                    questions.find((q) => q.id === selectedQuestionId)?.score !== null
+                      ? questions.find((q) => q.id === selectedQuestionId)?.score
+                      : "Not graded yet"}
+                  </p>
+                  <p>Feedback: {questions.find((q) => q.id === selectedQuestionId)?.feedback || "No feedback yet"}</p>
+                </div>
+              )}
+              <div className="useranswer">
+                <textarea className="useranswerinput"
+                  placeholder="Your Answer"
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                />
+                <button className="useranswersubmit" onClick={submitAnswer}>Submit</button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="userinfo">
+          <h2>{user.username}</h2>
+          <button onClick={signOut}>Sign out</button>
+        </div>
+      </div>
     </main>
   );
 }
