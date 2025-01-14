@@ -5,3 +5,5 @@
  Demo video: https://www.youtube.com/watch?v=jZPQ2GPsDS0
  <br />
  Demo website: https://main.d21yohakp2s707.amplifyapp.com/
+ <br />
+ <img src="practice question generator.gif">
