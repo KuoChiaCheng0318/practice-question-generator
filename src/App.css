@@ -74,12 +74,15 @@ ul {
   gap: 1px;
   background-color: black;
   border-radius: 8px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 li {
   background-color: white;
   padding: 8px;
+  white-space: nowrap; /* Prevent text wrapping */
+  text-overflow: ellipsis; /* Add ellipsis (...) for overflowed text */
+  overflow: hidden; /* Hide any overflowed content */
 }
 
 li:hover {
@@ -110,18 +113,43 @@ a {
   flex-direction: column; /* Stack items vertically */
   height: 100%;
   padding: 1px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
 }
 
 .questions {
-  flex: 10; /* Adjust this proportionally */
+  flex: 15; /* Adjust this proportionally */
   height: 100%;
   padding: 1px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between;
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
+}
+
+.generatequestionbutton {
+  align-self: center; /* Center the button horizontally */
+  margin-top: auto; /* Push the button to the bottom */
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  position: sticky;
+  bottom: 0;
 }
 
 .questiondetails {
-  flex: 50; /* Largest section */
+  flex: 45; /* Largest section */
   height: 100%;
   padding: 1px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
+
 }
 
 .userinfo {
@@ -135,6 +163,8 @@ a {
   padding: 5px;
   background-color: #f1f1f1;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  bottom: 0;
 }
 
 .testname {
@@ -164,14 +194,26 @@ a {
 .useranswer{
   margin-top: auto;
   display: flex;
+  position: sticky;
+  bottom: 0;
 }
 .useranswerinput{
   margin: 5px;
   width: 70%;
   height: 100%;
 }
+
 .useranswersubmit{
+  align-self: center; /* Center the button horizontally */
+  margin-top: auto; /* Push the button to the bottom */
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  background-color: #f1f1f1;
-  color:#1a1a1a
+  position: sticky;
+  bottom: 0;
 }

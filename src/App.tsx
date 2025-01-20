@@ -20,8 +20,7 @@ function App() {
   useEffect(() => {
     client.models.Test.observeQuery().subscribe({
       next: (data) => {
-        // Sort tests by createdAt in ascending order (oldest first)
-        const sortedTests = [...data.items].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        const sortedTests = [...data.items].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setTests(sortedTests);
       },
     });
@@ -34,8 +33,7 @@ function App() {
         { filter: { testId: { eq: selectedTestId } } }
       ).subscribe({
         next: (data) => {
-          // Sort questions by createdAt in ascending order (oldest first)
-          const sortedQuestions = [...data.items].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+          const sortedQuestions = [...data.items].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
           setQuestions(sortedQuestions);
         },
       });
@@ -201,7 +199,7 @@ function App() {
         {/* Display questions for the selected test */}
         <div className="questions">
           {selectedTestId && (
-            <div>
+            <div className="questionslist">
               <ul>
                 {questions.map((question) => (
                   <li key={question.id} onClick={() => {
@@ -213,7 +211,7 @@ function App() {
                 ))}
               </ul>
               {/* Generate a question */}
-              <button onClick={generateQuestion}>Generate Question</button>
+              <div className="generatequestionbutton" onClick={generateQuestion}>Generate Question</div>
             </div>
           )}
         </div>
@@ -221,11 +219,12 @@ function App() {
         <div className="questiondetails">
           {selectedQuestionId && (
             <div className="questiondetails2">
-              <strong>{questions.find((q) => q.id === selectedQuestionId)?.questioncontent}</strong>
+              <h2>{questions.find((q) => q.id === selectedQuestionId)?.questioncontent}</h2>
               {questions.find((q) => q.id === selectedQuestionId)?.useranswer && (
                 <div>
-                  <p>Answer: {questions.find((q) => q.id === selectedQuestionId)?.correctanswer}</p>
+                  <strong>Answer: {questions.find((q) => q.id === selectedQuestionId)?.correctanswer}</strong>
                   <p>Explanation: {questions.find((q) => q.id === selectedQuestionId)?.answerexplanation}</p>
+                  <hr />
                   <p>Your Answer: {questions.find((q) => q.id === selectedQuestionId)?.useranswer}</p>
                   <p>
                     Score:{" "}
@@ -243,7 +242,7 @@ function App() {
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                 />
-                <button className="useranswersubmit" onClick={submitAnswer}>Submit</button>
+                <div className="useranswersubmit" onClick={submitAnswer}>Submit</div>
               </div>
             </div>
           )}
