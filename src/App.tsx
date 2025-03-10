@@ -174,7 +174,8 @@ function App() {
           <div className="testlist">
             <ul>
               {tests.map((test) => (
-                <li key={test.id} onClick={() => setSelectedTestId(test.id)}>
+                <li key={test.id} onClick={() => setSelectedTestId(test.id)}
+                className={selectedTestId === test.id ? "selected-test" : ""}>
                   {test.testname} - {test.testdescription || "No description"}
                 </li>
               ))}
@@ -205,8 +206,9 @@ function App() {
                   <li key={question.id} onClick={() => {
                     setSelectedQuestionId(question.id);
                     setUserAnswer(""); 
-                  }}>
-                    <strong>{question.questioncontent}</strong>
+                  }}
+                  className={selectedQuestionId === question.id ? "selected-question" : ""}>
+                    {question.questioncontent}
                   </li>
                 ))}
               </ul>

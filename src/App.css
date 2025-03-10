@@ -70,25 +70,31 @@ ul {
   display: flex;
   flex-direction: column;
   margin: 8px 0;
-  border: 1px solid black;
-  gap: 1px;
-  background-color: black;
-  border-radius: 8px;
   overflow: hidden;
 }
 
 li {
-  background-color: white;
+  background-color: #f9f9f9;
   padding: 8px;
   white-space: nowrap; /* Prevent text wrapping */
   text-overflow: ellipsis; /* Add ellipsis (...) for overflowed text */
   overflow: hidden; /* Hide any overflowed content */
+  border-radius: 8px;
 }
 
 li:hover {
-  background: #dadbf9;
+  background: #ececec !important;
   cursor: pointer;
 }
+
+.selected-test {
+  background-color: #e3e3e3 ; /* Darker background for selected test */
+}
+
+.selected-question {
+  background-color: #e3e3e3 ; /* Darker background for selected question */
+}
+
 
 a {
   font-weight: 800;
