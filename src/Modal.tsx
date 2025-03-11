@@ -1,8 +1,26 @@
 import "./Modal.css"; // Create a CSS file for styling
 
-const Modal = ({ show, onClose, onSubmit, testName, setTestName, testDescription, setTestDescription }) => {
-  if (!show) return null; // Don't render if modal is not shown
-
+interface ModalProps {
+    show: boolean;
+    onClose: () => void;
+    onSubmit: () => void;
+    testName: string;
+    setTestName: (value: string) => void;
+    testDescription: string;
+    setTestDescription: (value: string) => void;
+  }
+  
+  const Modal: React.FC<ModalProps> = ({
+    show,
+    onClose,
+    onSubmit,
+    testName,
+    setTestName,
+    testDescription,
+    setTestDescription,
+  }) => {
+    if (!show) return null; // Don't render if modal is not shown
+  
   return (
     <div className="modal-overlay">
       <div className="modal-content">
