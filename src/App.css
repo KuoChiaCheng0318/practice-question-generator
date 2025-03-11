@@ -121,6 +121,7 @@ a {
   padding: 1px;
   overflow-y: auto; /* Enable vertical scrolling */
   scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
+  text-align: left;
 }
 
 .questions {
@@ -132,6 +133,7 @@ a {
   justify-content: space-between;
   overflow-y: auto; /* Enable vertical scrolling */
   scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
+  text-align: left;
 }
 
 .generatequestionbutton {
@@ -166,9 +168,9 @@ a {
 
 .createtest {
   margin-top: auto;
-  padding: 5px;
-  background-color: #f1f1f1;
-  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  /* box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); */
+  border-top: 2px solid #D6D6D5;
   position: sticky;
   bottom: 0;
 }
@@ -188,6 +190,8 @@ a {
 }
 .testcreatebutton{
   cursor: pointer;
+  color: #822cb1;
+  text-align: left;
 }
 
 .questiondetails2{

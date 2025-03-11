@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
+import Modal from "./Modal"; 
 import './App.css'
 
 const client = generateClient<Schema>();
@@ -11,6 +12,7 @@ function App() {
   const [tests, setTests] = useState<Array<Schema["Test"]["type"]>>([]);
   const [questions, setQuestions] = useState<Array<Schema["Question"]["type"]>>([]);
   const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const [selectedQuestionId, setSelectedQuestionId] = useState<string | null>(null);
   const [newTestName, setNewTestName] = useState("");
   const [newTestDescription, setNewTestDescription] = useState("");
@@ -53,6 +55,7 @@ function App() {
         }
         setNewTestName("");
         setNewTestDescription("");
+        setShowModal(false);
       } catch (error) {
         console.error("Error creating test:", error);
       }
@@ -181,7 +184,7 @@ function App() {
               ))}
             </ul>
           </div>
-          <div className="createtest">
+          {/* <div className="createtest">
             <input className="testname"
               type="text"
               placeholder="Test Name"
@@ -194,8 +197,23 @@ function App() {
               onChange={(e) => setNewTestDescription(e.target.value)}
             />
             <div className="testcreatebutton" onClick={createTest}>+ Create Test</div>
+          </div> */}
+          {/* Button to Open Modal */}
+          <div className="createtest">
+            <div className="testcreatebutton" onClick={() => setShowModal(true)}>+ Create Test</div>
           </div>
         </div>
+
+        {/* Modal for Creating Test */}
+        <Modal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          onSubmit={createTest}
+          testName={newTestName}
+          setTestName={setNewTestName}
+          testDescription={newTestDescription}
+          setTestDescription={setNewTestDescription}
+        />
 
         {/* Display questions for the selected test */}
         <div className="questions">
