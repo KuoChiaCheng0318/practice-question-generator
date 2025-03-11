@@ -6,4 +6,4 @@
  <br />
  Demo website: https://main.d21yohakp2s707.amplifyapp.com/
  <br />
- <img src="practice question generator.gif">
+ <img src="practice question generator demo 20250310.gif">
