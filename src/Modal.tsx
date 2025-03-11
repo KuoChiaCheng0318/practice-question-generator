@@ -6,7 +6,14 @@ const Modal = ({ show, onClose, onSubmit, testName, setTestName, testDescription
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Create New Test</h2>
+        <button
+          className="close-icon"
+          onClick={onClose} // Call the onClose prop to close the modal
+          aria-label="Close Modal" // Accessibility label for screen readers
+        >
+          &times;
+        </button>
+        <h2>New Test</h2>
         <input
           type="text"
           placeholder="Test Name"
@@ -19,9 +26,8 @@ const Modal = ({ show, onClose, onSubmit, testName, setTestName, testDescription
           onChange={(e) => setTestDescription(e.target.value)}
         />
         <div className="modal-buttons">
-          <button onClick={onSubmit}>Create</button>
-          <button className="cancel" onClick={onClose}>Cancel</button>
-        </div>
+          <button onClick={onSubmit}>+ Create Test</button>
+          </div>
       </div>
     </div>
   );

@@ -32,17 +32,14 @@
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  .modal-content textarea {
+    height: 128px;
+  }
   
   /* Buttons */
   .modal-buttons {
-    display: flex;
-    justify-content: space-between;
     margin-top: 10px;
-  }
-  
-  .modal-buttons .cancel {
-    background-color: red;
-    color: white;
   }
   
   .modal-buttons button {
@@ -50,10 +47,30 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
+    background-color: #c2c2c2;
+    color: black;
+    padding: 8px 12px;
   }
   
   .modal-buttons button:hover {
-    opacity: 0.8;
+    background-color: #e0e0e0; 
   }
-  
+
+  .close-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 24px;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px 24px;
+    outline: none;
+  }
+
+    .close-icon:focus,
+    .close-icon:active {
+    outline: none;
+    border: none;
+    }
