@@ -123,14 +123,52 @@ a {
   background-color: black;
   padding: 0px 20px;
   display: flex;
-  justify-content: space-between; /* Space out elements */
+  justify-content: flex-end; /* Space out elements */
   align-items: center;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000; /* Ensure it stays above other elements */
 }
 
+
+.user-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.username {
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #f9f9f9;
+  border-radius: 5px;
+  padding: 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.signoutbutton {
+  font-size: 16px;
+  border: none;
+  background: none;
+  color: black;
+  padding: 12px 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.signoutbutton:hover {
+  background: #ececec;
+}
+
 .tests {
-  flex: 15; /* Let it take up proportional space */
+  flex: 10; /* Let it take up proportional space */
   min-width: 0; 
   display: flex;
   flex-direction: column; /* Stack items vertically */
@@ -146,7 +184,7 @@ a {
 }
 
 .questions {
-  flex: 20; /* Adjust this proportionally */
+  flex: 15; /* Adjust this proportionally */
   height: 100%;
   padding: 8px;
   display: flex;

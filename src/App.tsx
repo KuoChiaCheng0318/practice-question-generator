@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
@@ -17,6 +17,8 @@ function App() {
   const [newTestName, setNewTestName] = useState("");
   const [newTestDescription, setNewTestDescription] = useState("");
   const [userAnswer, setUserAnswer] = useState<string>("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch the list of tests
   useEffect(() => {
@@ -168,11 +170,36 @@ function App() {
     }
   };
 
+  // Close the dropdown when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false); 
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <main>
       <div className="userinfo">
-        <h2>{user.username}</h2>
-        <button onClick={signOut}>Sign out</button>
+        <div 
+          className="user-dropdown" 
+          ref={dropdownRef} 
+          onClick={() => setShowDropdown(!showDropdown)}
+        >
+          <h2 className="username">{user.username}</h2>
+          {showDropdown && (
+            <div className="dropdown-menu">
+              <button className="signoutbutton" onClick={signOut}>Sign out</button>
+            </div>
+          )}
+        </div> 
       </div>
       <div className="mainpage">
         <div className="tests">
