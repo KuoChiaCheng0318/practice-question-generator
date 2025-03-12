@@ -103,29 +103,50 @@ a {
 
 .mainpage {
   position: absolute;
-  top:0;
+  top: 64px;
   left: 0;
   display: flex;
   background-color: #f9f9f9;
   font-family: Arial, sans-serif;
-  height: 100vh;
+  height: calc(100vh - 64px);
   min-width: 100vw;
   padding: 5px;
 }
 
+.userinfo {
+  height: 64px;
+  color: #f9f9f9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: black;
+  padding: 0px 20px;
+  display: flex;
+  justify-content: space-between; /* Space out elements */
+  align-items: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
 .tests {
-  flex: 10; /* Let it take up proportional space */
+  flex: 15; /* Let it take up proportional space */
+  min-width: 0; 
   display: flex;
   flex-direction: column; /* Stack items vertically */
   height: 100%;
   padding: 8px;
-  overflow-y: auto; /* Enable vertical scrolling */
-  scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
   text-align: left;
+  overflow: hidden; /* Prevent unwanted stretching */
+}
+
+.testlist {
+  flex-grow: 1;
+  overflow-y: auto; /* Scroll only inside this div */
 }
 
 .questions {
-  flex: 15; /* Adjust this proportionally */
+  flex: 20; /* Adjust this proportionally */
   height: 100%;
   padding: 8px;
   display: flex;
@@ -135,6 +156,22 @@ a {
   scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
   text-align: left;
   box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide scrollbar for test list */
+.testlist::-webkit-scrollbar, 
+.questions::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.testlist, .questions {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Internet Explorer & Edge */
+.testlist, .questions {
+  -ms-overflow-style: none;
 }
 
 .generatequestionbutton {
@@ -153,7 +190,7 @@ a {
 }
 
 .questiondetails {
-  flex: 45; /* Largest section */
+  flex: 65; /* Largest section */
   height: 100%;
   padding: 1px;
   overflow-y: auto; /* Enable vertical scrolling */
@@ -161,20 +198,12 @@ a {
   box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.1);
 }
 
-.userinfo {
-  flex: 5; /* Smallest section */
-  height: 100%;
-  padding: 1px;
-}
-
 .createtest {
-  margin-top: auto;
   padding: 8px;
-  /* box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); */
   border-top: 1px solid #D6D6D5;
   position: sticky;
-  bottom: 0;
-  background-color: #f9f9f9;
+  bottom: 0px;
+  background-color: #f9f9f9;  
 }
 
 .testname {

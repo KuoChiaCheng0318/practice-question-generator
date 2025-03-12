@@ -170,8 +170,11 @@ function App() {
 
   return (
     <main>
+      <div className="userinfo">
+        <h2>{user.username}</h2>
+        <button onClick={signOut}>Sign out</button>
+      </div>
       <div className="mainpage">
-        {/* Form to create a test */}
         <div className="tests">
           {/* Display tests */}
           <div className="testlist">
@@ -184,20 +187,6 @@ function App() {
               ))}
             </ul>
           </div>
-          {/* <div className="createtest">
-            <input className="testname"
-              type="text"
-              placeholder="Test Name"
-              value={newTestName}
-              onChange={(e) => setNewTestName(e.target.value)}
-            />
-            <textarea className="testdescription"
-              placeholder="Test Description"
-              value={newTestDescription}
-              onChange={(e) => setNewTestDescription(e.target.value)}
-            />
-            <div className="testcreatebutton" onClick={createTest}>+ Create Test</div>
-          </div> */}
           {/* Button to Open Modal */}
           <div className="createtest">
             <div className="testcreatebutton" onClick={() => setShowModal(true)}>+ Create Test</div>
@@ -266,10 +255,6 @@ function App() {
               </div>
             </div>
           )}
-        </div>
-        <div className="userinfo">
-          <h2>{user.username}</h2>
-          <button onClick={signOut}>Sign out</button>
         </div>
       </div>
     </main>
