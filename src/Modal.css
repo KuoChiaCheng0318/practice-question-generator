@@ -47,13 +47,13 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #c2c2c2;
-    color: black;
+    background-color: #7719aa;
+    color: white;
     padding: 8px 12px;
   }
   
   .modal-buttons button:hover {
-    background-color: #e0e0e0; 
+    background-color: #5A1380; 
   }
 
   .close-icon {

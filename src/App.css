@@ -120,7 +120,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: black;
+  background-color: #7719aa;
   padding: 0px 20px;
   display: flex;
   justify-content: flex-end; /* Space out elements */
@@ -181,50 +181,60 @@ a {
 .testlist {
   flex-grow: 1;
   overflow-y: auto; /* Scroll only inside this div */
+  position: relative; /* Required for sticky positioning */
 }
 
 .questions {
   flex: 15; /* Adjust this proportionally */
-  height: 100%;
-  padding: 8px;
+  min-width: 0; 
   display: flex;
   flex-direction: column; 
-  justify-content: space-between;
-  overflow-y: auto; /* Enable vertical scrolling */
-  scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
+  height: 100%;
+  padding: 8px;
   text-align: left;
   box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Prevent unwanted stretching */
+}
+
+.questionslist {
+  flex-grow: 1;
+  overflow-y: auto; /* Scroll only inside this div */
 }
 
 /* Hide scrollbar for test list */
 .testlist::-webkit-scrollbar, 
-.questions::-webkit-scrollbar {
+.questionslist::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for Firefox */
-.testlist, .questions {
+.testlist, .questionslist {
   scrollbar-width: none;
 }
 
 /* Hide scrollbar for Internet Explorer & Edge */
-.testlist, .questions {
+.testlist, .questionslist {
   -ms-overflow-style: none;
 }
 
 .generatequestionbutton {
   align-self: center; /* Center the button horizontally */
-  margin-top: auto; /* Push the button to the bottom */
+  text-align: center;
   padding: 10px 20px;
+  width: 100%;
   font-size: 1em;
   font-weight: 500;
   color: white;
-  background-color: black;
+  background-color: #7719aa;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  bottom: 0px;
   position: sticky;
-  bottom: 0;
+}
+
+.generatequestionbutton:hover {
+  background-color: #5A1380; 
 }
 
 .questiondetails {
@@ -244,19 +254,6 @@ a {
   background-color: #f9f9f9;  
 }
 
-.testname {
-  width: calc(100% - 5px);
-  margin: 0 auto;
-  padding: 5px;
-  box-sizing: border-box;
-}
-.testdescription {
-  width: calc(100% - 5px);
-  height: 20vh;
-  margin: 0 auto;
-  padding: 5px;
-  box-sizing: border-box;
-}
 .testcreatebutton{
   cursor: pointer;
   color: #822cb1;

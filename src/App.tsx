@@ -246,10 +246,10 @@ function App() {
                   </li>
                 ))}
               </ul>
-              {/* Generate a question */}
-              <div className="generatequestionbutton" onClick={generateQuestion}>Generate Question</div>
             </div>
           )}
+          {/* Generate a question */}
+          <div className="generatequestionbutton" onClick={generateQuestion}>Generate Question</div>
         </div>
         {/* Display selected question details */}
         <div className="questiondetails">
