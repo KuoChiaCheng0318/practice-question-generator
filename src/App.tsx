@@ -253,32 +253,53 @@ function App() {
         </div>
         {/* Display selected question details */}
         <div className="questiondetails">
-          {selectedQuestionId && (
+          {selectedTestId && (
             <div className="questiondetails2">
-              <h2>{questions.find((q) => q.id === selectedQuestionId)?.questioncontent}</h2>
-              {questions.find((q) => q.id === selectedQuestionId)?.useranswer && (
-                <div>
-                  <strong>Answer: {questions.find((q) => q.id === selectedQuestionId)?.correctanswer}</strong>
-                  <p>Explanation: {questions.find((q) => q.id === selectedQuestionId)?.answerexplanation}</p>
+              {/* Show Test Name and Description */}
+              <div className="card">
+                <h2 className="card-title">
+                  {tests.find((test) => test.id === selectedTestId)?.testname || "Untitled Test"}
+                </h2>
+                <p className="card-description">
+                  {tests.find((test) => test.id === selectedTestId)?.testdescription || "No description available"}
+                </p>
+              </div>
+              {selectedQuestionId && (
+                <div className="questiondetails3">
+                  <h2>{questions.find((q) => q.id === selectedQuestionId)?.questioncontent}</h2>
                   <hr />
-                  <p>Your Answer: {questions.find((q) => q.id === selectedQuestionId)?.useranswer}</p>
-                  <p>
-                    Score:{" "}
-                    {questions.find((q) => q.id === selectedQuestionId)?.score !== undefined &&
-                    questions.find((q) => q.id === selectedQuestionId)?.score !== null
-                      ? questions.find((q) => q.id === selectedQuestionId)?.score
-                      : "Not graded yet"}
-                  </p>
-                  <p>Feedback: {questions.find((q) => q.id === selectedQuestionId)?.feedback || "No feedback yet"}</p>
-                </div>
+                  {questions.find((q) => q.id === selectedQuestionId)?.useranswer && (
+                    <div>
+                      <strong>Answer: {questions.find((q) => q.id === selectedQuestionId)?.correctanswer}</strong>
+                      <p>Explanation: {questions.find((q) => q.id === selectedQuestionId)?.answerexplanation}</p>
+                      <br />
+                      <p>Your Answer: {questions.find((q) => q.id === selectedQuestionId)?.useranswer}</p>
+                      <p>
+                        Score:{" "}
+                        {questions.find((q) => q.id === selectedQuestionId)?.score !== undefined &&
+                        questions.find((q) => q.id === selectedQuestionId)?.score !== null
+                          ? questions.find((q) => q.id === selectedQuestionId)?.score
+                          : "Not graded yet"}
+                      </p>
+                      <p>Feedback: {questions.find((q) => q.id === selectedQuestionId)?.feedback || "No feedback yet"}</p>
+                    </div>
+                  )}
+                </div> 
               )}
               <div className="useranswer">
-                <textarea className="useranswerinput"
+                <textarea
+                  className="useranswerinput"
                   placeholder="Your Answer"
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                 />
-                <div className="useranswersubmit" onClick={submitAnswer}>Submit</div>
+                <button className="useranswersubmit" onClick={submitAnswer}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" >
+                    <path d="M12 19V5"></path>
+                    <path d="M5 12l7-7 7 7"></path>
+                  </svg>
+                </button>
               </div>
             </div>
           )}

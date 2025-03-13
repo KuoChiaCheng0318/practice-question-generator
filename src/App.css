@@ -203,17 +203,18 @@ a {
 
 /* Hide scrollbar for test list */
 .testlist::-webkit-scrollbar, 
-.questionslist::-webkit-scrollbar {
+.questionslist::-webkit-scrollbar
+.questiondetails3::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for Firefox */
-.testlist, .questionslist {
+.testlist, .questionslist, .questiondetails3 {
   scrollbar-width: none;
 }
 
 /* Hide scrollbar for Internet Explorer & Edge */
-.testlist, .questionslist {
+.testlist, .questionslist, .questiondetails3 {
   -ms-overflow-style: none;
 }
 
@@ -231,19 +232,11 @@ a {
   cursor: pointer;
   bottom: 0px;
   position: sticky;
+  margin-top: auto; /* Push the button to the bottom of screen */
 }
 
 .generatequestionbutton:hover {
   background-color: #5A1380; 
-}
-
-.questiondetails {
-  flex: 65; /* Largest section */
-  height: 100%;
-  padding: 1px;
-  overflow-y: auto; /* Enable vertical scrolling */
-  scrollbar-width: thin; /* Optional: Style the scrollbar for modern browsers */
-  box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.1);
 }
 
 .createtest {
@@ -260,36 +253,92 @@ a {
   margin-top: 8px;
 }
 
+.questiondetails {
+  flex: 65; /* Largest section */
+  height: 100%;
+  padding: 1px;
+  box-shadow: -10px 0 5px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: 10px auto;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0px;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #666;
+  margin: 0px;
+}
+
 .questiondetails2{
   display: flex;
   flex-direction: column; /* Stack items vertically */
   height: 100%;
   text-align: left;
   padding: 10px;
-}
-.useranswer{
-  margin-top: auto;
-  display: flex;
-  position: sticky;
-  bottom: 0;
-}
-.useranswerinput{
-  margin: 5px;
-  width: 70%;
-  height: 100%;
+  overflow: hidden;
+  max-width: 768px;
+  margin: 0 auto; /* Centers it horizontally */
 }
 
-.useranswersubmit{
-  align-self: center; /* Center the button horizontally */
-  margin-top: auto; /* Push the button to the bottom */
-  padding: 10px 20px;
+.questiondetails3 {
+  flex-grow: 1;
+  overflow-y: auto; /* Scroll only inside this div */
+}
+
+.useranswer{
+  display: flex;
+  bottom: 0px;
+  position: sticky;
+  margin-top: auto;  /* Push to the bottom */
+}
+.useranswerinput {
+  flex: 1;
+  padding: 12px 50px 12px 15px; /* Space for button */
+  border: 2px solid #ccc;
+  border-radius: 25px;
   font-size: 1em;
-  font-weight: 500;
+  outline: none;
+  transition: border-color 0.3s;
+  resize: none; /* Prevent resizing */
+  height: 128px;
+}
+
+.useranswerinput:focus {
+  border-color: #333;
+}
+
+.useranswersubmit {
+  position: absolute;
+  right: 12px;
+  bottom: 0px; 
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.5em;
   color: white;
   background-color: black;
-  border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   cursor: pointer;
-  position: sticky;
-  bottom: 0;
+  font-size: 18px;
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+}
+
+.useranswersubmit:hover {
+  background-color: #575758;
 }
